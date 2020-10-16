@@ -4,7 +4,7 @@
 //
 //  Created by Mark Kryzhanouski on 10/12/20.
 //
-import UIKit
+import CoreData
 import Foundation
 
 /// The possible errors returned by the `WeatherService`
@@ -53,7 +53,7 @@ protocol WeatherService {
 
 class WeatherServiceImpl: WeatherService {
 
-    private let context = (UIApplication.shared.delegate as? AppDelegate)!.persistentContainer.viewContext
+    private let context = DependencyModule.resolve(NSManagedObjectContext.self)
 
     internal init() {
     }

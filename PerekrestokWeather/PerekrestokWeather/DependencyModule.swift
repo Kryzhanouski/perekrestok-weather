@@ -7,6 +7,8 @@
 
 import Foundation
 import Swinject
+import CoreData
+import UIKit
 
 /// This Module is used for dependency injection in this app. Use the static `container` property to `resolve` dependencies where you need them.
 class DependencyModule {
@@ -18,6 +20,7 @@ class DependencyModule {
     /// add all the dependencies to the DI container. Should be called on app start
     static func bootstrap() {
         bootstrapServices()
+        bootstrapCoreData()
     }
     
     /// Resolve a registered dependency.
@@ -30,6 +33,12 @@ class DependencyModule {
     private static func bootstrapServices() {
         container.register(WeatherService.self) { resolver in
             return WeatherServiceImpl()
+            }.inObjectScope(.container)
+    }
+
+    private static func bootstrapCoreData() {
+        container.register(NSManagedObjectContext.self) { resolver in
+            return (UIApplication.shared.delegate as? AppDelegate)!.persistentContainer.viewContext
             }.inObjectScope(.container)
     }
 }
